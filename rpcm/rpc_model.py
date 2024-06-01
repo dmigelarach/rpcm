@@ -99,6 +99,46 @@ def apply_rfm(num, den, x, y, z):
     """
     return apply_poly(num, x, y, z) / apply_poly(den, x, y, z)
 
+def apply_drfm_dz(num, den, x, y, z):
+    """
+    Args:
+        num: list of the 20 coefficients of the numerator
+        den: list of the 20 coefficients of the denominator
+            All these coefficients are ordered following the RPC convention.
+        x, y, z: triplet of floats. They may be numpy arrays of same length.
+
+    Returns:
+        the value(s) of the rfm on the input point(s).
+    """
+    u = apply_poly(num, x, y, z)
+    v = apply_poly(den, x, y, z)
+    
+    du = apply_dpoly_dz(num, x, y, z)
+    dv = apply_dpoly_dz(den, x, y, z)
+    
+    return (du*v- dv*u)/(u*u)
+
+def apply_ddrfm_dz2(num, den, x, y, z):
+    """
+    Args:
+        num: list of the 20 coefficients of the numerator
+        den: list of the 20 coefficients of the denominator
+            All these coefficients are ordered following the RPC convention.
+        x, y, z: triplet of floats. They may be numpy arrays of same length.
+
+    Returns:
+        the value(s) of the rfm on the input point(s).
+    """
+    u = apply_poly(num, x, y, z)
+    v = apply_poly(den, x, y, z)
+    
+    du = apply_dpoly_dz(num, x, y, z)
+    dv = apply_dpoly_dz(den, x, y, z)
+
+    ddu = apply_ddpoly_dz2(num, x, y, z)
+    ddv = apply_ddpoly_dz2(den, x, y, z)
+    
+    return (ddu*(v*v*v)-u*ddv*(v*v)+ 2*u*v*dv*dv - 2*du*v*(dv*dv))/(v*v*v*v)
 
 def rpc_from_geotiff(geotiff_path):
     """
