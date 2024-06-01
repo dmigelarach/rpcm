@@ -66,6 +66,23 @@ def apply_dpoly_dz(poly, x, y, z):
     
     return out
 
+def apply_ddpoly_dz2(poly, x, y, z):
+    """
+    Args:
+        poly: list of the 20 coefficients of the 3-variate degree 3 polynom,
+            ordered following the RPC convention.
+        x, y, z: triplet of floats. They may be numpy arrays of same length.
+
+    Returns:
+        the value(s) of the polynom on the input point(s).
+    """   
+    out = 0
+    out += poly[9]*2
+    out += poly[13]*y*2 
+    out += poly[16]*x*2
+    out += poly[19]*3*2*z
+    return out
+
 
 def apply_rfm(num, den, x, y, z):
     """
